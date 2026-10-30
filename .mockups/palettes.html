@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Palette options</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    background: #11151a; color: #c9d1d9; padding: 28px 20px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .head { max-width: 980px; margin: 0 auto 24px; }
+  .head h1 { font-size: 20px; color: #fff; margin-bottom: 8px; }
+  .head p { font-size: 14px; line-height: 1.6; color: #8b949e; max-width: 720px; }
+  .grid { max-width: 980px; margin: 0 auto; display: grid; gap: 22px; }
+
+  .pal { border-radius: 14px; overflow: hidden; border: 1px solid #2b323b; }
+  .pal-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: #1c2128; flex-wrap: wrap; }
+  .pal-head .name { font-weight: 700; font-size: 14px; color: #fff; }
+  .pal-head .desc { font-size: 12.5px; color: #8b949e; }
+  .pal-head .flag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+  .flag-avoid { background: #3a1f1f; color: #ff9b9b; border: 1px solid #5c2b2b; }
+  .flag-pick  { background: #1f3a2a; color: #8ff0b0; border: 1px solid #2b5c3f; }
+
+  .swatches { display: flex; }
+  .sw { flex: 1; height: 46px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; }
+  .sw span { font-size: 9px; font-family: ui-monospace, Menlo, monospace; mix-blend-mode: difference; color:#fff; }
+
+  /* demo hero */
+  .demo { padding: 30px 26px 34px; }
+  .demo .hi { font-style: italic; font-size: 15px; margin-bottom: 4px; }
+  .demo .name { font-size: clamp(26px,5vw,40px); font-weight: 800; line-height: 1.08; letter-spacing: -.02em; }
+  .demo .name em { font-style: normal; }
+  .demo .sub { font-size: 14px; line-height: 1.6; margin-top: 12px; max-width: 460px; }
+  .demo .row { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .demo .btn { font-size: 12.5px; font-weight: 700; padding: 8px 14px; border-radius: 8px; }
+  .demo .chip { font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 6px; }
+  .demo .tl { margin-top: 18px; padding-top: 14px; }
+  .demo .tl .yr { font-weight: 700; font-size: 12px; }
+  .demo .tl .role { font-weight: 700; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>Palette options — all matte / pastel, all steering away from "Claude coral + cream"</h1>
+  <p>Same little hero + timeline row rendered in each palette so you can judge colour in context. The first is Claude's palette, labelled, as the thing to avoid. The rest keep your slate/warm DNA but break the coral-on-cream pairing.</p>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+  const palettes = [
+    {
+      name: "Claude (avoid)", flag: "avoid",
+      desc: "coral accent on warm cream — what we drifted into",
+      bg: "#f0eee6", ink: "#3a3631", accent: "#d4744d", accent2: "#c96442", soft: "#e6e2d6"
+    },
+    {
+      name: "Slate-forward", flag: "pick",
+      desc: "your slate leads, cool paper bg, salmon only as a small accent — least AI-ish",
+      bg: "#eef1f1", ink: "#2f3a44", accent: "#4f6d83", accent2: "#e08a5f", soft: "#dfe5e5"
+    },
+    {
+      name: "Sage & rust",
+      desc: "pale sage paper, deep slate ink, earthy rust accent (redder than Claude's clay)",
+      bg: "#e9ece4", ink: "#33403a", accent: "#b5532f", accent2: "#7d9484", soft: "#dde2d6"
+    },
+    {
+      name: "Putty & ochre",
+      desc: "greyer putty bg + warm ochre/mustard accent — warm but not coral at all",
+      bg: "#e8e4da", ink: "#3a352c", accent: "#c89a3c", accent2: "#5d6b74", soft: "#ddd8cb"
+    },
+    {
+      name: "Dusty rose & slate",
+      desc: "cool oat bg, slate ink, muted dusty-rose accent — soft, a touch unexpected",
+      bg: "#edeae3", ink: "#39414a", accent: "#bb7080", accent2: "#56707f", soft: "#e0dcd2"
+    }
+  ];
+
+  const grid = document.getElementById('grid');
+  palettes.forEach(p => {
+    const flag = p.flag === 'avoid'
+      ? '<span class="flag flag-avoid">steer away</span>'
+      : (p.flag === 'pick' ? '<span class="flag flag-pick">my lean</span>' : '');
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="pal">
+        <div class="pal-head">
+          <span class="name">${p.name}</span>${flag}
+          <span class="desc">${p.desc}</span>
+        </div>
+        <div class="swatches">
+          <div class="sw" style="background:${p.bg}"><span>${p.bg}</span></div>
+          <div class="sw" style="background:${p.soft}"><span>${p.soft}</span></div>
+          <div class="sw" style="background:${p.ink}"><span>${p.ink}</span></div>
+          <div class="sw" style="background:${p.accent2}"><span>${p.accent2}</span></div>
+          <div class="sw" style="background:${p.accent}"><span>${p.accent}</span></div>
+        </div>
+        <div class="demo" style="background:${p.bg}">
+          <p class="hi" style="color:${p.accent}">Hi there —</p>
+          <h1 class="name" style="color:${p.ink}">I'm Dhruv, a <em style="color:${p.accent}">software engineer.</em></h1>
+          <p class="sub" style="color:${p.accent2}">Graduate Frontend Engineer at Canva. Recently finished a Masters at UWA.</p>
+          <div class="row">
+            <span class="btn" style="background:${p.accent};color:${p.bg}">Contact</span>
+            <span class="btn" style="background:${p.soft};color:${p.ink}">Resume</span>
+            <span class="chip" style="background:${p.soft};color:${p.ink};border:1px solid ${p.accent2}">TYPESCRIPT</span>
+            <span class="chip" style="background:${p.soft};color:${p.ink};border:1px solid ${p.accent2}">REACT</span>
+          </div>
+          <div class="tl" style="border-top:1px solid ${p.accent2}44">
+            <span class="yr" style="color:${p.accent}">2024 — </span>
+            <span class="role" style="color:${p.ink}">Canva</span>
+            <span style="color:${p.accent2};font-size:13px"> · Frontend Intern</span>
+          </div>
+        </div>
+      </div>
+    `);
+  });
+</script>
+</body>
+</html>
