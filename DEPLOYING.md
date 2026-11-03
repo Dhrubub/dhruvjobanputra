@@ -50,7 +50,7 @@ npm run build && npm run preview   # serve the production build
 | Change | Where |
 |---|---|
 | Text, links, timeline, skills, projects | `src/data/content.ts` |
-| Résumé PDF | Replace the single PDF in `src/assets/resume/`. The `/resume` route opens whichever PDF is in that folder, so keep exactly one. |
+| Résumé PDF | Overwrite `public/resume.pdf`. It is served at `/resume.pdf` and `/resume` redirects there, so the link never changes. |
 | Photos / images | `src/assets/` |
 | Page title, meta tags, favicon | `index.html` |
 | Sitemap | `public/sitemap.xml` |

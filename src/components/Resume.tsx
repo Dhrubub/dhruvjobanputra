@@ -1,21 +1,13 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
+// /resume is a stable alias for the PDF, which lives in public/resume.pdf
+// so its URL never changes when the file is updated.
 const Resume = () => {
-	const navigate = useNavigate();
-
 	useEffect(() => {
-		const files = import.meta.glob('../assets/resume/*.pdf');
-		const filePath = Object.keys(files)[0]; // Get the first PDF file
+		window.location.replace('/resume.pdf');
+	}, []);
 
-		files[filePath]().then((module) => {
-			const resumePath = (module as { default: string }).default;
-			window.open(resumePath, '_self');
-			navigate('/', { replace: true });
-		});
-	}, [navigate]);
-
-	return null; // No UI needed since we're opening the PDF
+	return null;
 };
 
 export default Resume;
